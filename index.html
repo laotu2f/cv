@@ -191,6 +191,34 @@
         50% { transform: translateX(-50%) translateY(-10px); }
         100% { transform: translateX(-50%) translateY(0); }
       }
+      /* CSS mới cho ô nhập liệu, tinh chỉnh để đồng nhất và đẹp hơn, căn trái */
+      .monthly-inputs {
+        width: 90%;
+        max-width: 800px;
+        margin: 20px auto;
+        text-align: left; /* Giữ nguyên căn trái */
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        border-radius: 5px;
+      }
+      .monthly-inputs label {
+        display: block; /* Giữ nguyên để căn trái */
+        margin: 10px 0; /* Điều chỉnh margin để phù hợp */
+        font-weight: bold;
+        color: #333;
+        vertical-align: middle;
+      }
+      .monthly-inputs input {
+        width: 200px; /* Giữ nguyên kích thước input */
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        text-align: left;
+        vertical-align: middle;
+      }
+      /* Xóa phần CSS liên quan đến tooltip vì không cần nữa */
     </style>
   </head>
   <body>
@@ -206,6 +234,12 @@
       <button onclick="checkCode()">Đăng nhập</button>
     </div>
     <div id="main-container" style="display: none">
+      <!-- Thêm 3 ô nhập liệu mới, giữ lại chỉ hướng dẫn trong placeholder, xóa tooltip -->
+      <div class="monthly-inputs">
+        <label>Rev Moth: <input type="text" id="rev-moth" placeholder="MTD REV / CM (e.g., 100/12)"></label>
+        <label>Suppl Moth: <input type="text" id="suppl-moth" placeholder="Nhập Suppl Moth"></label>
+        <label>Session Moth: <input type="text" id="session-moth" placeholder="Nhập Session Moth"></label>
+      </div>
       <h2>Bảng Công việc Hàng Ngày</h2>
       <table>
         <thead>
@@ -357,11 +391,16 @@
       function copyReport() {
         const ptCode = document.getElementById("code-input").value;
         const ptName = document.getElementById("pt-name-input").value;
+        const revMoth = document.getElementById("rev-moth").value || "";
+        const supplMoth = document.getElementById("suppl-moth").value || "";
+        const sessionMoth = document.getElementById("session-moth").value || "";
         const currentDate = new Date().toLocaleString("vi-VN", { 
           day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" 
         });
         
-        let report = `PT Name: ${ptName}\nStaff Code: ${ptCode}\nBáo cáo CN: ${currentDate}\n\n`;
+        let report = `PT Name: ${ptName}\nStaff Code: ${ptCode}\nBáo cáo CN: ${currentDate}\n`;
+        report += `Rev Moth: ${revMoth}\nSuppl Moth: ${supplMoth}\nSession Moth: ${sessionMoth}\n\n`;
+        
         timeSlots.forEach((slot) => {
           const select = document.querySelector(`#row-${slot} select`);
           const value = select.value || "";
